@@ -5,9 +5,13 @@ Improved version with better error handling and logging
 Supports both HTTP API and RunPod Serverless formats
 """
 
+import os
+# CRITICAL: Accept Coqui TTS license before importing TTS
+# This prevents interactive prompt that crashes Docker containers
+os.environ['COQUI_TOS_AGREED'] = '1'
+
 from flask import Flask, request, send_file, jsonify
 from TTS.api import TTS
-import os
 import tempfile
 import base64
 import time

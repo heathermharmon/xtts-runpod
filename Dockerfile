@@ -19,6 +19,9 @@ RUN pip3 install --no-cache-dir \
 WORKDIR /app
 COPY handler.py .
 
+# Accept Coqui TTS license (non-commercial use)
+ENV COQUI_TOS_AGREED=1
+
 EXPOSE 8000
 
 CMD ["python3", "-u", "handler.py"]

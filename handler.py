@@ -4,9 +4,13 @@ RunPod Serverless Handler for XTTS Voice Cloning
 This is the entry point for RunPod Serverless workers
 """
 
+import os
+# CRITICAL: Accept Coqui TTS license before importing TTS
+# This prevents interactive prompt that crashes Docker containers
+os.environ['COQUI_TOS_AGREED'] = '1'
+
 import runpod
 from TTS.api import TTS
-import os
 import tempfile
 import base64
 import time
