@@ -163,5 +163,5 @@ def test():
     })
 
 if __name__ == '__main__':
-    print("🚀 Starting XTTS server on port 8880...")
-    app.run(host='0.0.0.0', port=8880, debug=False)
+    print("🚀 Starting XTTS server on port 8000...")
+    app.run(host='0.0.0.0', port=8000, debug=False)

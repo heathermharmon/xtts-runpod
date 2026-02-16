@@ -21,11 +21,11 @@ WORKDIR /app
 COPY xtts_server.py .
 
 # Expose port
-EXPOSE 8880
+EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python3 -c "import requests; requests.get('http://localhost:8880/health')"
+    CMD python3 -c "import requests; requests.get('http://localhost:8000/health')"
 
 # Run server
 CMD ["python3", "xtts_server.py"]
