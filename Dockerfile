@@ -9,11 +9,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir \
+    torch==2.0.1 \
+    transformers==4.33.2 \
     TTS \
     flask \
     numpy \
     requests \
-    torch \
     runpod
 
 WORKDIR /app
