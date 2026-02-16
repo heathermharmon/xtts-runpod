@@ -12,9 +12,9 @@ RUN apt-get update && apt-get install -y \
 ARG CACHE_BUST=2026-02-16-08:20
 
 RUN pip3 install --no-cache-dir \
-    torch==2.0.1 \
+    torch==2.1.0 \
     transformers==4.33.2 \
-    TTS \
+    TTS==0.22.0 \
     flask \
     numpy \
     requests \
