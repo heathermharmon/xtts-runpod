@@ -10,11 +10,23 @@ import os
 os.environ['COQUI_TOS_AGREED'] = '1'
 
 import runpod
-from TTS.api import TTS
 import tempfile
 import base64
 import time
 import torch
+
+# Monkeypatch to fix weight loading issue with XTTS v2
+# The model has parametrization keys that cause "unexpected keys" errors
+original_load_state_dict = torch.nn.Module.load_state_dict
+
+def patched_load_state_dict(self, state_dict, strict=True):
+    """Load state dict with strict=False to ignore unexpected parametrization keys"""
+    return original_load_state_dict(self, state_dict, strict=False)
+
+torch.nn.Module.load_state_dict = patched_load_state_dict
+
+# NOW import TTS after patching
+from TTS.api import TTS
 
 # Initialize XTTS model (loads once at worker startup)
 print("🚀 [HANDLER] Loading XTTS v2 model...")
