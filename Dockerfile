@@ -10,20 +10,15 @@ RUN apt-get update && apt-get install -y \
 
 # Install Coqui TTS and dependencies
 RUN pip3 install --no-cache-dir \
-    TTS==0.22.0 \
-    flask==3.0.0 \
-    numpy==1.24.3 \
-    torch==2.1.0 \
-    torchaudio==2.1.0
+    TTS \
+    flask \
+    numpy
 
 # Create app directory
 WORKDIR /app
 
 # Copy XTTS API server
 COPY xtts_server.py .
-
-# Pre-download XTTS model to speed up cold starts
-RUN python3 -c "from TTS.api import TTS; TTS(model_name='tts_models/multilingual/multi-dataset/xtts_v2', gpu=False)"
 
 # Expose port
 EXPOSE 8880
