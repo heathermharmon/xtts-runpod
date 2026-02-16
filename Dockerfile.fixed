@@ -1,0 +1,37 @@
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+# Install Python and system dependencies
+RUN apt-get update && apt-get install -y \
+    python3.10 \
+    python3-pip \
+    ffmpeg \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Coqui TTS and dependencies
+RUN pip3 install --no-cache-dir \
+    TTS \
+    flask \
+    numpy \
+    requests \
+    torch \
+    runpod
+
+# Create app directory
+WORKDIR /app
+
+# Copy XTTS API server
+COPY xtts_server.py .
+COPY handler.py .
+
+# Expose port
+EXPOSE 8000
+
+# Health check with extended start period for model loading
+# XTTS v2 model is ~2GB and takes 2-5 minutes to download + load
+HEALTHCHECK --interval=30s --timeout=10s --start-period=300s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Run server
+CMD ["python3", "xtts_server.py"]
