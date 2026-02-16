@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Cache buster - forces rebuild of pip install layer
+ARG CACHE_BUST=2026-02-16-08:20
+
 RUN pip3 install --no-cache-dir \
     torch==2.0.1 \
     transformers==4.33.2 \
