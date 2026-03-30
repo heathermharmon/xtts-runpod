@@ -46,3 +46,12 @@ jobs:
           no-cache: true
           build-args: |
             CACHE_BUST=${{ github.sha }}
+
+      - name: Make package public
+        run: |
+          curl -s -X PATCH "https://api.github.com/user/packages/container/xtts-runpod" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -d '{"visibility": "public"}'
+          echo "Package visibility update attempted"
