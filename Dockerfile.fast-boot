@@ -23,7 +23,7 @@ ENV COQUI_TOS_AGREED=1
 # Pre-bake XTTS v2 model weights (~2GB) into the image.
 # Without this, every cold-start worker downloads the model fresh (~90s).
 # With this, workers skip the download and go straight to GPU load (~10-15s).
-RUN python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
+RUN python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2', gpu=False)"
 
 WORKDIR /app
 COPY handler.py .
