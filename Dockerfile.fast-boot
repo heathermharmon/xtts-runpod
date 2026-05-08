@@ -1,0 +1,32 @@
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+RUN apt-get update && apt-get install -y \
+    python3.10 \
+    python3-pip \
+    ffmpeg \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir \
+    torch==2.1.0 \
+    transformers==4.33.2 \
+    TTS==0.22.0 \
+    flask \
+    numpy \
+    requests \
+    runpod
+
+# Must be set before model download to accept Coqui license non-interactively
+ENV COQUI_TOS_AGREED=1
+
+# Pre-bake XTTS v2 model weights (~2GB) into the image.
+# Without this, every cold-start worker downloads the model fresh (~90s).
+# With this, workers skip the download and go straight to GPU load (~10-15s).
+RUN python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
+
+WORKDIR /app
+COPY handler.py .
+
+EXPOSE 8000
+CMD ["python3", "-u", "handler.py"]
